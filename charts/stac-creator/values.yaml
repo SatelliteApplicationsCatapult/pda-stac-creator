@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: satapps/cs-stac-creator
+  repository: satapps/pda-stac-creator
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []

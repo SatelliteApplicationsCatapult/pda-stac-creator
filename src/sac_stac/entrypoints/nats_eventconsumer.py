@@ -48,7 +48,7 @@ async def run(nc, repo, loop):
                 if k in subject:
                     stac_type, key = v(repo, data)
                     if key:
-                        subj = f'stac_indexer.{stac_type}'
+                        subj = f'stac_ingester.{stac_type}'
                         msg = key.encode()
                         await nc.publish(subj, msg)
                         logger.info(f"Published a message on '{subj}': {msg.decode()}")

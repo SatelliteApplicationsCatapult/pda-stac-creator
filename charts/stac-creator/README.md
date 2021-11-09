@@ -4,7 +4,7 @@ A Helm chart for Kubernetes
 
 Current chart version is `0.1.4`
 
-Source code can be found [here](https://github.com/SatelliteApplicationsCatapult/cs-stac-creator)
+Source code can be found [here](https://github.com/SatelliteApplicationsCatapult/pda-stac-creator)
 
 
 
@@ -19,7 +19,7 @@ Source code can be found [here](https://github.com/SatelliteApplicationsCatapult
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `"satapps/cs-stac-creator"` |  |
+| image.repository | string | `"satapps/pda-stac-creator"` |  |
 | imagePullSecrets | list | `[]` |  |
 | nameOverride | string | `""` |  |
 | nats.hostname | string | `"nats"` |  |

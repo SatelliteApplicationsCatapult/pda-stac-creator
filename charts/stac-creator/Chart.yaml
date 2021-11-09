@@ -17,7 +17,7 @@ type: application
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
 version: 0.1.4
 
-home: https://github.com/SatelliteApplicationsCatapult/cs-stac-creator
+home: https://github.com/SatelliteApplicationsCatapult/pda-stac-creator
 
 maintainers:
   - name: SatelliteApplicationsCatapult

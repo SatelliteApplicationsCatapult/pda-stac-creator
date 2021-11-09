@@ -36,7 +36,7 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: satapps/cs-stac-creator:${{ steps.sha.outputs.sha_short }}
+          tags: satapps/pda-stac-creator:${{ steps.sha.outputs.sha_short }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
