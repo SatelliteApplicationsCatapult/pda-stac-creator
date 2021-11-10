@@ -2069,6 +2069,124 @@
           }
         }
       }
+    },
+    {
+      "id": "WorldView-02",
+      "title": "Copernicus Worldview-02 datasets",
+      "description": "A collection of Worldview-02 datasets. Obtained from Securewatch and prepared by Catapult.",
+      "formatting": {
+        "date": {
+          "regex": "(\\d{8})",
+          "format": "%Y%m%d"
+        }
+      },
+      "providers": [
+        {
+          "name": "European Space Agency",
+          "roles": [
+            "producer",
+            "licensor"
+          ],
+          "url": "https://www.esa.int/"
+        },
+        {
+          "name": "Satellite Applications Catapult",
+          "roles": [
+            "processor",
+            "host"
+          ],
+          "url": "https://sa.catapult.org.uk/"
+        }
+      ],
+      "common_metadata": {
+        "gsd": 10,
+        "instruments": [
+          "msi"
+        ],
+        "constellation": "Worldview-02",
+        "platform": "Worldview-02"
+      },
+      "extensions": {
+        "eo": {
+          "cloud_cover": 0.0,
+          "bands": [
+            {
+              "name": "0.46m",
+              "common_name": "0.46m",
+              "units": "1",
+              "dtype": "uint16",
+              "nodata": 0
+            }
+          ]
+        },
+        "product_definition": {
+          "metadata_type": "eo3",
+          "metadata": {
+            "product": {
+              "name": "Worldview-02"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "WorldView-03",
+      "title": "Copernicus Worldview-03 datasets",
+      "description": "A collection of Worldview-03 datasets. Obtained from Securewatch and prepared by Catapult.",
+      "formatting": {
+        "date": {
+          "regex": "(\\d{8})",
+          "format": "%Y%m%d"
+        }
+      },
+      "providers": [
+        {
+          "name": "European Space Agency",
+          "roles": [
+            "producer",
+            "licensor"
+          ],
+          "url": "https://www.esa.int/"
+        },
+        {
+          "name": "Satellite Applications Catapult",
+          "roles": [
+            "processor",
+            "host"
+          ],
+          "url": "https://sa.catapult.org.uk/"
+        }
+      ],
+      "common_metadata": {
+        "gsd": 10,
+        "instruments": [
+          "msi"
+        ],
+        "constellation": "Worldview-03",
+        "platform": "Worldview-03"
+      },
+      "extensions": {
+        "eo": {
+          "cloud_cover": 0.0,
+          "bands": [
+            {
+              "name": "0.31m",
+              "common_name": "0.31m",
+              "units": "1",
+              "dtype": "uint16",
+              "nodata": 0
+            }
+          ]
+        },
+        "product_definition": {
+          "metadata_type": "eo3",
+          "metadata": {
+            "product": {
+              "name": "Worldview-03"
+            }
+          }
+        }
+      }
     }
   ]
 }
