@@ -1,12 +1,15 @@
 import asyncio
 import logging
 import signal
+import urllib3
 
 from nats.aio.client import Client as NATS
 from sac_stac.adapters import repository
 from sac_stac.domain.s3 import S3
 from sac_stac.service_layer.services import add_stac_collection, add_stac_item
 from sac_stac.load_config import get_nats_uri, LOG_LEVEL, LOG_FORMAT, get_s3_configuration
+
+urllib3.disable_warnings()
 
 logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT)
 

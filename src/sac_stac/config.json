@@ -2010,6 +2010,65 @@
           }
         }
       }
+    },
+    {
+      "id": "WorldView-01",
+      "title": "Copernicus Worldview-1 datasets",
+      "description": "A collection of Worldview-1 datasets. Obtained from Securewatch and prepared by Catapult.",
+      "formatting": {
+        "date": {
+          "regex": "(\\d{8})",
+          "format": "%Y%m%d"
+        }
+      },
+      "providers": [
+        {
+          "name": "European Space Agency",
+          "roles": [
+            "producer",
+            "licensor"
+          ],
+          "url": "https://www.esa.int/"
+        },
+        {
+          "name": "Satellite Applications Catapult",
+          "roles": [
+            "processor",
+            "host"
+          ],
+          "url": "https://sa.catapult.org.uk/"
+        }
+      ],
+      "common_metadata": {
+        "gsd": 10,
+        "instruments": [
+          "msi"
+        ],
+        "constellation": "Worldview-1",
+        "platform": "Worldview-1"
+      },
+      "extensions": {
+        "eo": {
+          "cloud_cover": 0.0,
+          "bands": [
+            {
+              "name": "WV60_0.5m",
+              "common_name": "wv60",
+              "units": "1",
+              "dtype": "uint16",
+              "nodata": 0
+            }
+          ]
+        },
+        "product_definition": {
+          "metadata_type": "eo3",
+          "metadata": {
+            "product": {
+              "name": "Worldview-1"
+            }
+          }
+        }
+      }
     }
   ]
 }

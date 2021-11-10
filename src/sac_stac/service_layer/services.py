@@ -23,9 +23,55 @@ S3_HREF = f"{S3_ENDPOINT}/{S3_BUCKET}"
 GENERIC_EPSG = 4326
 
 
-def add_stac_collection(repo: S3Repository, sensor_key: str):
-    STAC_IO.read_text_method = repo.stac_read_method
+def create_collection(sensor_conf: dict, repo: S3Repository) -> SacCollection:
+    logger.info(f"Creating {sensor_conf.get('id')} collection...")
+    collection = SacCollection(
+        id=sensor_conf.get('id'),
+        title=sensor_conf.get('title'),
+        description=sensor_conf.get('description'),
+        extent=Extent(SpatialExtent([[0, 0, 0, 0]]), TemporalExtent([["", ""]])),
+        properties={}
+    )
 
+    collection.add_providers(sensor_conf)
+    collection.add_product_definition_extension(
+        product_definition=sensor_conf.get('extensions').get('product_definition'),
+        bands_metadata=sensor_conf.get('extensions').get('eo').get('bands')
+    )
+
+    catalog = get_create_catalog(repo)
+
+    catalog.add_child(collection)
+    catalog.normalize_hrefs(f"{S3_HREF}/{S3_STAC_KEY}")
+
+    # TODO: Replace STAC_IO.write_text_method
+    repo.add_json_from_dict(
+        bucket=S3_BUCKET,
+        key=S3_CATALOG_KEY,
+        stac_dict=catalog.to_dict()
+    )
+
+    repo.add_json_from_dict(
+        bucket=S3_BUCKET,
+        key=f"{S3_STAC_KEY}/{sensor_conf.get('id')}/collection.json",
+        stac_dict=collection.to_dict()
+    )
+    logger.info(f"{sensor_conf.get('id')} collection added to {S3_CATALOG_KEY}")
+
+    return collection
+
+
+def get_sensor_config(sensor_name: str) -> dict:
+    sensor_configs = [s for s in config.get('sensors')]
+    try:
+        sensor_conf = [s for s in sensor_configs if s.get('id') == sensor_name][0]
+    except IndexError:
+        logger.warning(f"No config found for {sensor_name} sensor")
+        return 'collection', None
+    return sensor_conf
+
+
+def get_create_catalog(repo: S3Repository) -> Catalog:
     try:
         catalog_dict = repo.get_dict(bucket=S3_BUCKET, key=S3_CATALOG_KEY)
         catalog = Catalog.from_dict(catalog_dict)
@@ -38,51 +84,20 @@ def add_stac_collection(repo: S3Repository, sensor_key: str):
             description=config.get('description'),
             stac_extensions=config.get('stac_extensions')
         )
+    return catalog
+
+def add_stac_collection(repo: S3Repository, sensor_key: str):
+    STAC_IO.read_text_method = repo.stac_read_method
 
     sensor_name = sensor_key.split('/')[-2]
-    sensor_configs = [s for s in config.get('sensors')]
-    try:
-        sensor_conf = [s for s in sensor_configs if s.get('id') == sensor_name][0]
-    except IndexError:
-        logger.warning(f"No config found for {sensor_name} sensor")
-        return 'collection', None
+    sensor_conf = get_sensor_config(sensor_name)
 
     collection_key = f"{S3_STAC_KEY}/{sensor_name}/collection.json"
     try:
         repo.get_dict(bucket=S3_BUCKET, key=collection_key)
         logger.info(f"Collection {sensor_name} already exists in {collection_key}")
     except NoObjectError:
-        logger.info(f"Creating {sensor_name} collection...")
-        collection = SacCollection(
-            id=sensor_conf.get('id'),
-            title=sensor_conf.get('title'),
-            description=sensor_conf.get('description'),
-            extent=Extent(SpatialExtent([[0, 0, 0, 0]]), TemporalExtent([["", ""]])),
-            properties={}
-        )
-
-        collection.add_providers(sensor_conf)
-        collection.add_product_definition_extension(
-            product_definition=sensor_conf.get('extensions').get('product_definition'),
-            bands_metadata=sensor_conf.get('extensions').get('eo').get('bands')
-        )
-
-        catalog.add_child(collection)
-        catalog.normalize_hrefs(f"{S3_HREF}/{S3_STAC_KEY}")
-
-        # TODO: Replace STAC_IO.write_text_method
-        repo.add_json_from_dict(
-            bucket=S3_BUCKET,
-            key=S3_CATALOG_KEY,
-            stac_dict=catalog.to_dict()
-        )
-
-        repo.add_json_from_dict(
-            bucket=S3_BUCKET,
-            key=collection_key,
-            stac_dict=collection.to_dict()
-        )
-        logger.info(f"{sensor_name} collection added to {S3_CATALOG_KEY}")
+        create_collection(sensor_conf=sensor_conf, repo=repo)
 
     acquisition_keys = repo.get_acquisition_keys(bucket=S3_BUCKET,
                                                  acquisition_prefix=sensor_key)
@@ -100,8 +115,13 @@ def add_stac_item(repo: S3Repository, acquisition_key: str):
     logger.debug(f"[Item] Adding {acquisition_key} item to {sensor_name}...")
 
     try:
-        collection_dict = repo.get_dict(bucket=S3_BUCKET, key=collection_key)
-        collection = SacCollection.from_dict(collection_dict)
+        try:
+            collection_dict = repo.get_dict(bucket=S3_BUCKET, key=collection_key)
+            collection = SacCollection.from_dict(collection_dict)
+        except NoObjectError:
+            logger.info(f"No collection found in {S3_ENDPOINT}/{S3_BUCKET}/{collection_key}")
+            sensor_conf = get_sensor_config(sensor_name)
+            collection = create_collection(sensor_conf=sensor_conf, repo=repo)
 
         item_id = acquisition_key.split('/')[-2]
         item_key = f"{S3_STAC_KEY}/{collection.id}/{item_id}/{item_id}.json"
@@ -149,7 +169,7 @@ def add_stac_item(repo: S3Repository, acquisition_key: str):
             product_keys = repo.get_product_keys(bucket=S3_BUCKET, products_prefix=acquisition_key)
 
             for band_name, band_common_name in [(b.get('name'), b.get('common_name')) for b in bands_metadata]:
-                asset_href = ''
+                asset_href = f"{S3_HREF}/{product_keys[0]}"
                 proj_shp = [0, 0]
                 proj_tran = [0, 0, 0, 0, 0, 0]
 

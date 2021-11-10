@@ -20,12 +20,12 @@ class S3Repository:
         return self.s3.list_common_prefixes(bucket_name=bucket, prefix=acquisition_prefix)
 
     def get_product_keys(self, bucket: str, products_prefix: str) -> List[str]:
-        product_objs = self.s3.list_objects(bucket_name=bucket, prefix=products_prefix, suffix='.tif')
+        product_objs = self.s3.list_objects(bucket_name=bucket, prefix=products_prefix, suffix='.TIF')
         return [p.key for p in product_objs]
 
     def get_smallest_product_key(self, bucket: str, products_prefix: str) -> str:
         try:
-            product_objs = self.s3.list_objects(bucket_name=bucket, prefix=products_prefix, suffix='.tif')
+            product_objs = self.s3.list_objects(bucket_name=bucket, prefix=products_prefix, suffix='.TIF')
             product_objs_size = {p.size: p.key for p in product_objs if p.size > 1}
             product_min_size = min(list(product_objs_size.keys()))
             return product_objs_size.get(product_min_size)
