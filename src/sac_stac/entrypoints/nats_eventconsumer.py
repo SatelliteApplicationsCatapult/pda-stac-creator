@@ -54,7 +54,10 @@ async def run(nc, repo, loop):
                     stac_type, key = v(repo, data)
                     if key:
                         subj = f'stac_ingester.collection'
-                        collection_key = Path(key).parent.parent / 'collection.json'
+                        if stac_type == 'item':
+                            collection_key = Path(key).parent.parent / 'collection.json'
+                        else:
+                            collection_key = Path(key).parent / 'collection.json'
                         msg = str(collection_key).encode()
                         await nc.publish(subj, msg)
                         logger.info(f"Published a message on '{subj}': {msg.decode()}")
