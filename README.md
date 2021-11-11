@@ -23,13 +23,13 @@ already, it will consider the generated collections as part of it.
 ### Creating a Collection
 
 ```bash
-nats pub -s nats://localhost:4222 stac_creator.collection stac_catalogs/novasar_test/novasar_scansar_20m/collection.json
+nats pub -s nats://localhost:4222 stac_creator.collection novasar_uk_test/uk_novasar_stripmap_6m/
 ```
 
 ### Creating an Item
 
 ```bash
-nats pub -s nats://localhost:4222 stac_creator.item stac_catalogs/novasar_test/novasar_scansar_20m/NovaSAR_01_16359_slc_11_201025_231831_HH_2_ML_TC_TF_cog/NovaSAR_01_16359_slc_11_201025_231831_HH_2_ML_TC_TF_cog.json
+nats pub -s nats://localhost:4222 stac_creator.item novasar_uk_test/uk_novasar_stripmap_6m/NovaSAR_01_15861_slc_11_201009_232232_VV_3_ML_TC_TF_cog/NovaSAR_01_15861_slc_11_201009_232232_VV_3_Gamma0_Intensity_VV_db.tif
 ```
 
 **NOTE**: This example is using the *https://s3-uk-1.sa-catapult.co.uk* endpoint and *public-eo-data* bucket given by 
