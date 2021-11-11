@@ -151,7 +151,7 @@ def add_stac_item(repo: S3Repository, acquisition_key: str):
                 raise
 
             item = SacItem(
-                id=Path(acquisition_key).stem,
+                id=item_id,
                 datetime=date,
                 geometry=json.loads(GeoSeries([geometry], crs=crs).to_crs(GENERIC_EPSG).to_json()).get('features')[0].get(
                     'geometry'),

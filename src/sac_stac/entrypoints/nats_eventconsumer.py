@@ -1,6 +1,8 @@
 import asyncio
 import logging
 import signal
+from pathlib import Path
+
 import urllib3
 
 from nats.aio.client import Client as NATS
@@ -51,8 +53,9 @@ async def run(nc, repo, loop):
                 if k in subject:
                     stac_type, key = v(repo, data)
                     if key:
-                        subj = f'stac_ingester.{stac_type}'
-                        msg = key.encode()
+                        subj = f'stac_ingester.collection'
+                        collection_key = Path(key).parent.parent / 'collection.json'
+                        msg = str(collection_key).encode()
                         await nc.publish(subj, msg)
                         logger.info(f"Published a message on '{subj}': {msg.decode()}")
 

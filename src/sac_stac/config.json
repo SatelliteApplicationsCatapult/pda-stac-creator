@@ -2072,7 +2072,7 @@
     },
     {
       "id": "WorldView-02",
-      "title": "Copernicus Worldview-02 datasets",
+      "title": "Copernicus WorldView-02 datasets",
       "description": "A collection of Worldview-02 datasets. Obtained from Securewatch and prepared by Catapult.",
       "formatting": {
         "date": {
@@ -2103,8 +2103,8 @@
         "instruments": [
           "msi"
         ],
-        "constellation": "Worldview-02",
-        "platform": "Worldview-02"
+        "constellation": "WorldView-02",
+        "platform": "WorldView-02"
       },
       "extensions": {
         "eo": {
@@ -2131,8 +2131,8 @@
     },
     {
       "id": "WorldView-03",
-      "title": "Copernicus Worldview-03 datasets",
-      "description": "A collection of Worldview-03 datasets. Obtained from Securewatch and prepared by Catapult.",
+      "title": "Copernicus WorldView-03 datasets",
+      "description": "A collection of WorldView-03 datasets. Obtained from Securewatch and prepared by Catapult.",
       "formatting": {
         "date": {
           "regex": "(\\d{8})",
@@ -2162,8 +2162,8 @@
         "instruments": [
           "msi"
         ],
-        "constellation": "Worldview-03",
-        "platform": "Worldview-03"
+        "constellation": "WorldView-03",
+        "platform": "WorldView-03"
       },
       "extensions": {
         "eo": {
@@ -2182,7 +2182,7 @@
           "metadata_type": "eo3",
           "metadata": {
             "product": {
-              "name": "Worldview-03"
+              "name": "WorldView-03"
             }
           }
         }
